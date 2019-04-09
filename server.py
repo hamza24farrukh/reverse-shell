@@ -35,3 +35,16 @@ def bind_socket():
 		print("socket binding error " + str(err) + "\n" + "Retrying...")
 		bind_socket()
 
+# establish connection with a client (socket must be listening)
+
+def socket_accept():
+	global host
+	global port
+	global s
+
+	conn, address = s.accept()
+	print("connection has been established! " + "IP " + address[0] + "| Port " + str(address[1]))
+	send_command(conn)
+
+	conn.close()
+
